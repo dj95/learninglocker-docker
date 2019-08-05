@@ -1,0 +1,68 @@
+version: "3.5"
+services:
+    proxy:
+        build: "./proxy/."
+        image: "dj95/learninglocker-proxy:${PROXY_VERSION:-latest}"
+        ports:
+            - "8080:80"
+        environment:
+            UI_PORT: 3000
+            UI_HOST: "ui"
+            API_PORT: 8080
+            API_HOST: "api"
+            XAPI_PORT: 8081
+            XAPI_HOST: "xapi"
+
+    ui:
+        build: "./ui/."
+        image: "dj95/learninglocker-ui:${UI_VERSION:-latest}"
+        environment:
+            UI_PORT: 3000
+            SITE_URL: "http://localhost"
+            MONGODB_PATH: "mongodb://mongodb:27017/learninglocker_v2"
+            REDIS_HOST: "redis"
+            REDIS_PORT: "6379"
+            REDIS_DB: "0"
+            REDIS_PREFIX: "LEARNINGLOCKER"
+
+    api:
+        build: "./api/."
+        image: "dj95/learninglocker-api:${API_VERSION:-latest}"
+        environment:
+            API_PORT: 8080
+            SITE_URL: "http://localhost"
+            MONGODB_PATH: "mongodb://mongodb:27017/learninglocker_v2"
+            REDIS_HOST: "redis"
+            REDIS_PORT: "6379"
+            REDIS_DB: "0"
+            REDIS_PREFIX: "LEARNINGLOCKER"
+
+    worker:
+        build: "./worker/."
+        image: "dj95/learninglocker-worker:${WORKER_VERSION:-latest}"
+        environment:
+            SITE_URL: "http://localhost"
+            MONGODB_PATH: "mongodb://mongodb:27017/learninglocker_v2"
+            REDIS_HOST: "redis"
+            REDIS_PORT: "6379"
+            REDIS_DB: "0"
+            REDIS_PREFIX: "LEARNINGLOCKER"
+
+    xapi:
+        build: "./xapi/."
+        image: "dj95/learninglocker-xapi:${XAPI_VERSION:-latest}"
+        environment:
+            XAPI_PORT: 8081
+            MONGO_URL: "mongodb://mongodb:27017/learninglocker_v2"
+            REDIS_HOST: "redis"
+            REDIS_PORT: "6379"
+            REDIS_DB: "0"
+            REDIS_PREFIX: "LEARNINGLOCKER"
+
+    # dependencies for storage and caching
+    
+    mongodb:
+        image: mongo
+
+    redis:
+        image: redis

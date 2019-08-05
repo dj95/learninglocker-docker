@@ -1,0 +1,28 @@
+version: "3.5"
+services:
+    learninglocker:
+        build: .
+        image: learninglocker
+        ports:
+            - "8080:80"
+        environment:
+            SITE_URL: "_"
+            UI_PORT: 3000
+            UI_HOST: "127.0.0.1"
+            API_PORT: 8080
+            API_HOST: "127.0.0.1"
+            XAPI_PORT: 8081
+            XAPI_HOST: "127.0.0.1"
+            MONGODB_PATH: "mongodb://mongodb:27017/learninglocker_v2"
+            MONGO_URL: "mongodb://mongodb:27017/learninglocker_v2"
+            MONGO_DB: "learninglocker_v2"
+            REDIS_HOST: "redis"
+            REDIS_PORT: 6379
+            REDIS_DB: "0"
+            REDIS_PREFIX: "LEARNINGLOCKER"
+
+    mongodb:
+        image: mongo
+
+    redis:
+        image: redis
